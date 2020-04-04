@@ -15,33 +15,26 @@ export class StaticSettingsProvider implements ISettingsProvider {
 
     constructor(private readonly settingsPath: string) { }
 
-    public getSetting(name: string): Promise<Object> {
-        const promise = new Promise(async (resolve) => {
-            await this.getSettings();
-
-            if (this.configuration[name]) {
-                resolve(this.configuration[name]);
-                return;
-            }
-        });
-
-        return promise;
+    public async getSetting<T>(name: string): Promise<T> {
+        await this.getSettings();
+        return this.configuration[name];
     }
 
-    public setSetting(name: string, value: Object): void {
+    public setSetting<T>(name: string, value: T): void {
         this.configuration[name] = value;
     }
 
-    public getSettings(): Promise<any> {
+    public getSettings<T>(): Promise<T> {
         if (!this.loadingPromise) {
             this.loadingPromise = this.loadSettings();
         }
 
-        return this.loadingPromise;
+        return <any>this.loadingPromise;
     }
 
-    private async loadSettings(): Promise<void> {
+    private async loadSettings(): Promise<any> {
         const configFileContent = await Utils.loadFileAsString(this.settingsPath);
         this.configuration = JSON.parse(configFileContent);
+        return this.configuration;
     }
 }

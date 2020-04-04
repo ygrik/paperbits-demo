@@ -3,6 +3,7 @@
     "version": "0.1.202",
     "description": "An example of using Paperbits to build web apps with rich content editing capability.",
     "author": "Paperbits",
+    "engines" : { "node" : ">=12.13.0" },
     "license": "MIT",
     "keywords": [
         "paperbits",
